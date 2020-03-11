@@ -2,13 +2,14 @@ class Sudoku:
     def __init__(self, sudoku):
         self.rows = self.createRows(sudoku)
         self.columns = self.createColumns(self.rows)
+        self.emptyPlace = [0,0]
 
     def createRows(self, sudoku):
         row = 0
         rows = {}
         rows[row] = []
 
-        for c in sudoku: #81 5 0 1
+        for c in sudoku: #81
             rows[row].append(c)
 
             if len(rows[row]) % 9 == 0:
@@ -31,46 +32,51 @@ class Sudoku:
         return columns
 
     def solveSudoku(self, row, column):
-        #base case
-        if row == -1:
+        # goal: not finding an empty space
+        if not self.findNextEmptySpace():
             return True
-        while column < len(self.rows[row]):
-            if self.rows[row][column] != '0':
-                self.solveSudoku(row, column + 1)
-            if self.rows[row][column] == '0':
-                for number in self.possibleNumbers(row, column):
-                    # if valid set the number
-                    self.rows[row][column] = number
-                    continue
-                if len(self.possibleNumbers(row, column)) == 0:
-                    self.rows[row][column] = 0
-                    self.solveSudoku(row, column - 1)
-        column = 0
-        self.solveSudoku(row + 1, column)
 
+        row = self.emptyPlace[0]
+        column = self.emptyPlace[1]
+
+        #if self.rows[row][column] == '0':
+        for i in range(1,10):
+
+            # if the number is not in the same row, column or square, place it
+            if (str(i) not in self.rows[row]) and (str(i) not in self.columns[column]) and (str(i) not in self.validateSquare(row, column)):
+
+                # assign possible solving value to position
+                self.rows[row][column] = str(i)
+                self.columns[column][row] = str(i)
+
+                # check if entered result solves the puzzle
+                if(self.solveSudoku(row, column)):
+                    return True
+
+                # if not solved undo set value
+                self.rows[row][column] = '0'
+                self.columns[column][row] = '0'
+
+        # trigger backtracking
         return False
 
-    def validateSquare(self, number, row, column):
+    def findNextEmptySpace(self):
+        for i in range(9):
+            for j in range(9):
+                if self.rows[i][j] == '0':
+                    self.emptyPlace[0] = i
+                    self.emptyPlace[1] = j
+                    return True
+        return False
+
+    def validateSquare(self, row, column):
         square = []
         for i in self.rows:
             if int(row) // 3 == i // 3:
                 for j in self.columns:
                     if int(column) // 3 == j // 3:
                         square.append(self.rows[i][j])
-
-        if number not in square:
-            return True
-
-    def possibleNumbers(self, row, column):
-        possibleNumbers = []
-        for n in range(1,10):
-            if n not in self.rows[row]:
-                if n not in self.columns[column]:
-                    if self.validateSquare(str(n), row, column):
-                        possibleNumbers.append(str(n))
-
-        print(possibleNumbers)
-        return possibleNumbers
+        return square
 
     def printSudoku(self):
         for row in range(9):
