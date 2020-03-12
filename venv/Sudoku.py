@@ -1,3 +1,5 @@
+import time
+
 class Sudoku:
     def __init__(self, sudoku):
         self.rows = self.createRows(sudoku)
@@ -6,10 +8,9 @@ class Sudoku:
 
     def createRows(self, sudoku):
         row = 0
-        rows = {}
-        rows[row] = []
+        rows = {row: []}
 
-        for c in sudoku: #81
+        for c in sudoku:
             rows[row].append(c)
 
             if len(rows[row]) % 9 == 0:
@@ -20,26 +21,26 @@ class Sudoku:
 
     def createColumns(self, rows):
         column = 0
-        columns = {}
-        columns[column] = []
+        columns = {column: []}
 
-        for i in range(9): #9
-            for j in range(9): #9
+        for i in range(9):
+            for j in range(9):
                 columns[column].append(rows[j][i])
             column += 1
             columns[column] = []
 
         return columns
 
-    def solveSudoku(self, row, column):
+    def solveSudoku(self):
         # goal: not finding an empty space
         if not self.findNextEmptySpace():
             return True
 
+        # assign coordinates to row and column
         row = self.emptyPlace[0]
         column = self.emptyPlace[1]
 
-        #if self.rows[row][column] == '0':
+        # for all needed numbers
         for i in range(1,10):
 
             # if the number is not in the same row, column or square, place it
@@ -64,6 +65,7 @@ class Sudoku:
         for i in range(9):
             for j in range(9):
                 if self.rows[i][j] == '0':
+                    # if there is an empty space set coordinates
                     self.emptyPlace[0] = i
                     self.emptyPlace[1] = j
                     return True
@@ -72,13 +74,18 @@ class Sudoku:
     def validateSquare(self, row, column):
         square = []
         for i in self.rows:
+            # a square is always 3x3. To make sure all numbers are compared within the right square a floor division
+            # is done. this will enable a determination of the right rows and columns (0,1,2 // 3 == 0, etc.)
             if int(row) // 3 == i // 3:
                 for j in self.columns:
                     if int(column) // 3 == j // 3:
+                        # while iterating through all the right numbers
                         square.append(self.rows[i][j])
         return square
 
     def printSudoku(self):
+        # modulo 3 is used to print dividers at the appropriate places
+        # the end parameter in print is used to paste different prints together
         for row in range(9):
             if row % 3 == 0:
                 print(13 * '- ')
@@ -132,8 +139,11 @@ Sudoku.printSudoku()
 
 print('Press any key to solve')
 input()
-Sudoku.solveSudoku(0,0)
+start = time.time()
+Sudoku.solveSudoku()
+end = time.time()
 
+print('Solving took: ' + str(end - start) + ' seconds')
 print('Solved! Here is the result')
 Sudoku.printSudoku()
 
