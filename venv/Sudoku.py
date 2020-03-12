@@ -51,7 +51,7 @@ class Sudoku:
                 self.columns[column][row] = str(i)
 
                 # check if entered result solves the puzzle
-                if(self.solveSudoku(row, column)):
+                if(self.solveSudoku()):
                     return True
 
                 # if not solved undo set value
