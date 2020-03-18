@@ -114,8 +114,8 @@ print('Solve own (o) sudoku or a prefilled one (p)?')
 choice = input()
 
 while choice not in ['o','p']:
-    choice = input()
     print('Please enter a valid value')
+    choice = input()
 
 if choice == 'o':
     print('Enter your Sudoku as a 81-character string')
@@ -126,8 +126,9 @@ if choice == 'p':
     difficulty = input()
 
     while difficulty not in ['easy', 'medium', 'hard', 'master']:
-        difficulty = input()
         print('Please enter a valid value')
+        difficulty = input()
+
 
     sudoku = prefills.get(difficulty)
 

@@ -3,5 +3,5 @@
 
 # except
 !.gitignore
-!*/venv/Sudoku.py
+!Sudoku.py
 !README.md
