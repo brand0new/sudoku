@@ -3,6 +3,6 @@
 
 # except
 !.gitignore
-!application/sudoku.py
+!sudoku.py
 !README.md
 !api.py

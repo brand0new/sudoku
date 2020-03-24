@@ -1,6 +1,6 @@
 from flask import Flask, request, json
 
-from application.sudoku import solve
+from sudoku import solve
 
 app = Flask(__name__)
 
