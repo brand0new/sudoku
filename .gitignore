@@ -1,8 +1,9 @@
 # ignore everything
-*
+venv/
+*__pycache__
+.idea
 
 # except
 !.gitignore
-!app/
 !run.py
 !README.md
