@@ -3,6 +3,6 @@
 
 # except
 !.gitignore
-!sudoku.py
+!app/
+!run.py
 !README.md
-!api.py
